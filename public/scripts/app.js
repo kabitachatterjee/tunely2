@@ -77,7 +77,7 @@ function renderAlbum(album) {
                   </li>
                 </ul>
               </div>
-
+               
             </div>
             <!-- end of album internal row -->
 
