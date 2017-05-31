@@ -47,6 +47,7 @@ $('.modal-footer #saveSong').on('click', function(e) {
     renderAlbum(album);  //render the server's response
   });
   $(this).trigger("reset");
+  $('#songModal').modal('hide');
 });
 });
 
