@@ -36,19 +36,37 @@ $('#albums').on('click','.add-song',function(e){
     $('#songModal').modal();
 //});
 
-$('.modal-footer #saveSong').on('click', function(e) {
-  console.log("clicked" + id);
-  e.preventDefault();
-  var newSong = { name: $("#songName").val(),
-                  trackNumber: $("#trackNumber").val()};
-  console.log(newSong);
-  $.post('/api/albums/'+ id+'/songs', newSong, function(album) {
-    console.log('album after POST', album);
-    renderAlbum(album);  //render the server's response
+  $('.modal-footer #saveSong').on('click', function(e) {
+    console.log("clicked" + id);
+    e.preventDefault();
+    var newSong = { name: $("#songName").val(),
+                    trackNumber: $("#trackNumber").val()};
+    console.log(newSong);
+    $.post('/api/albums/'+ id+'/songs', newSong, function(album) {
+      console.log('album after POST', album);
+      renderAlbum(album);  //render the server's response
+    });
+    $(this).trigger("reset");
+    $('#songModal').modal('hide');
+    location.reload();
   });
-  $(this).trigger("reset");
-  $('#songModal').modal('hide');
+
 });
+
+$('#albums').on('click','.delete-album',function(e){
+    console.log('delete-song clicked!');
+    var id = $(this).closest('.album').data('album-id');
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/albums/'+id,
+      success: function(album) {
+        console.log('album after DELETE', album);
+        location.reload();
+      },
+      error: function() {
+        console.log('error on delete');
+      }
+  });
 });
 
 function renderMultipleAlbums(albums) {
@@ -107,6 +125,7 @@ function renderAlbum(album) {
 
             <div class='panel-footer'>
              <button class="btn btn-primary add-song">Add New Song</button>
+             <button class="btn btn-primary delete-album">Delete Album</button>
             </div>
 
           </div>
