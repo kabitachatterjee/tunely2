@@ -35,6 +35,11 @@ function renderMultipleAlbums(albums) {
 
 function renderAlbum(album) {
   console.log('rendering album', album);
+  var allSongs = "";
+  album.songs.forEach(function(song,index){
+   allSongs = allSongs +' ('+ (index+1) + ") " + song.name;
+   //console.log(allSongs);
+  });
   var albumHtml = (`
     <div class="row album">
 
@@ -54,6 +59,11 @@ function renderAlbum(album) {
                   <li class="list-group-item">
                     <h4 class='inline-header'>Album Name:</h4>
                     <span class='album-name'>${album.name}</span>
+                  </li>
+
+                    <li class="list-group-item">
+                        <h4 class="inline-header">Songs:</h4>
+                        <span>${allSongs}</span>
                   </li>
 
                   <li class="list-group-item">
@@ -80,5 +90,8 @@ function renderAlbum(album) {
     </div>
     <!-- end one album -->
   `);
+
+
   $('#albums').prepend(albumHtml);
+
 }
