@@ -29,14 +29,55 @@ albumList.push({
               genres: [ 'country', 'rock' ]
             });
 
+var sampleSongs = [];
 
-db.Album.remove({}, function(err, albums){
-
-  db.Album.create(albumList, function(err, albums){
-    if (err) { return console.log('ERROR', err); }
-    console.log("all albums:", albums);
-    console.log("created", albums.length, "albums");
-    process.exit();
-  });
-
+sampleSongs.push({ name: 'Swamped',
+                   trackNumber: 1
 });
+sampleSongs.push({ name: "Heaven's a Lie",
+                   trackNumber: 2
+});
+sampleSongs.push({ name: 'Daylight Dancer',
+                   trackNumber: 3
+});
+sampleSongs.push({ name: 'Humane',
+                   trackNumber: 4
+});
+sampleSongs.push({ name: 'Self Deception',
+                   trackNumber: 5
+});
+sampleSongs.push({ name: 'Aeon',
+                   trackNumber: 6
+});
+sampleSongs.push({ name: 'Tight Rope',
+                   trackNumber: 7
+});
+
+
+  db.Album.remove({}, function(err, albumsugh){
+
+
+    db.Album.create(albumList, function(err, albums){
+      if (err) { return console.log('ERROR', err); }
+      console.log("all albums:", albums);
+      console.log("created", albums.length, "albums");
+      let numFinished = 0;
+      albums.forEach(function(element,index){
+        
+        sampleSongs.forEach(function(song,index){
+          element.songs.push(song);
+
+        })
+        console.log("current album is ", element);
+        console.log(element.songs);
+        element.save(function (err, savedElement) {
+          numFinished += 1;
+          if (numFinished === albums.length) {
+            process.exit();
+          }
+        });
+
+      })
+    });
+
+  });

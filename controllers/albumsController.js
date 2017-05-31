@@ -10,6 +10,7 @@ var db = require('../models');
 function index(req, res) {
   // send back all albums as JSON
   db.Album.find({}, function(err, allAlbums) {
+    console.log ("db's albums are ", allAlbums);
     res.json(allAlbums);
   });
 }
