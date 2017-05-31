@@ -25,6 +25,29 @@ $(document).ready(function() {
     });
     $(this).trigger("reset");
   });
+//});
+
+
+$('#albums').on('click','.add-song',function(e){
+    console.log('add-song clicked!');
+    var id = $(this).closest('.album').data('album-id'); // "5665ff1678209c64e51b4e7b"
+    console.log('id',id);
+    $('#songModal').data('album-id', id);
+    $('#songModal').modal();
+//});
+
+$('.modal-footer #saveSong').on('click', function(e) {
+  console.log("clicked" + id);
+  e.preventDefault();
+  var newSong = { name: $("#songName").val(),
+                  trackNumber: $("#trackNumber").val()};
+  console.log(newSong);
+  $.post('/api/albums/'+ id+'/songs', newSong, function(album) {
+    console.log('album after POST', album);
+    renderAlbum(album);  //render the server's response
+  });
+  $(this).trigger("reset");
+});
 });
 
 function renderMultipleAlbums(albums) {
@@ -41,7 +64,7 @@ function renderAlbum(album) {
    //console.log(allSongs);
   });
   var albumHtml = (`
-    <div class="row album">
+    <div class="row album" data-album-id="${album._id}">
 
       <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
@@ -77,11 +100,12 @@ function renderAlbum(album) {
                   </li>
                 </ul>
               </div>
-               
+
             </div>
             <!-- end of album internal row -->
 
             <div class='panel-footer'>
+             <button class="btn btn-primary add-song">Add New Song</button>
             </div>
 
           </div>
@@ -91,7 +115,11 @@ function renderAlbum(album) {
     <!-- end one album -->
   `);
 
-
   $('#albums').prepend(albumHtml);
 
 }
+});
+
+// $('.add-song').on('click', function() {
+//   console.log('clicked add song');
+// });
